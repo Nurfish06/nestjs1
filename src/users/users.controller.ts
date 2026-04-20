@@ -1,13 +1,15 @@
 import { Controller, Get, Post, Body, Patch, Delete, Param } from '@nestjs/common';
 import { UsersService } from './users.service'
 import { CreateUserDto } from './dto/create-user.dto';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('/api/users')
 export class UsersController {
 
     //Dependency Injection
     constructor(private readonly usersService: UsersService) { }
-
+    @UseGuards(JwtAuthGuard)
     @Get()
     getAllUsers() {
         return this.usersService.findAll();
