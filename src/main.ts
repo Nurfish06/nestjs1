@@ -6,6 +6,10 @@ import { Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors(); // Corrected method name
+  
+  // Or more specific:
+  // app.enableCors({ origin: 'http://localhost:3001' });
   
   // Microservice connection (TCP)
   app.connectMicroservice({
