@@ -5,12 +5,16 @@ import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Roles } from '../auth/roles.decorator';
 import { RolesGuard } from '../auth/roles.guard';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiTags('users')
 @Controller('/api/users')
 export class UsersController {
 
     //Dependency Injection
     constructor(private readonly usersService: UsersService) { }
+    
+    @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
     @Get()
     getAllUsers() {
@@ -21,6 +25,8 @@ export class UsersController {
     createUser(@Body() userData: CreateUserDto) {
         return this.usersService.create(userData);
     }
+
+    @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
     @Patch(':id')
     updateUser(
@@ -29,6 +35,8 @@ export class UsersController {
     ) {
         return this.usersService.update(Number(id), body.name);
     }
+
+    @ApiBearerAuth()
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles('admin')
     @Delete(':id')
